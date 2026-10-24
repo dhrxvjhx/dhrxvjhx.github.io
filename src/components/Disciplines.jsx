@@ -1,5 +1,6 @@
 
 import { ArrowUpRight } from "lucide-react";
+import Link from "react-router-dom";
 
 const categories = [
   {
@@ -136,7 +137,7 @@ function CategoryArtwork({ artwork }) {
 
 function CategoryCard({ category }) {
   return (
-    <a
+    <Link
       className="category-card"
       href={`/work#${category.slug}`}
       aria-label={`Explore ${category.title}`}
@@ -155,13 +156,13 @@ function CategoryCard({ category }) {
 
       <h3>{category.title}</h3>
       <p>{category.description}</p>
-    </a>
+    </Link>
   );
 }
 
 function ExploreCard() {
   return (
-    <a className="category-card explore-card" href="/work">
+    <Link className="category-card explore-card" to="/work">
       <div className="explore-card-visual">
         <span className="eyebrow">THE COMPLETE INDEX / 2026</span>
 
@@ -188,7 +189,7 @@ function ExploreCard() {
 
       <h3>Explore all work</h3>
       <p>Projects, experiments and ideas in progress.</p>
-    </a>
+    </Link>
   );
 }
 

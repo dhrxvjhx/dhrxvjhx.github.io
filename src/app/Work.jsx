@@ -1,5 +1,5 @@
-
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation, Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { projects } from "../data/projects";
@@ -13,6 +13,15 @@ const filters = [
   { label: "AI & Research", value: "ai-research" },
 ];
 
+// Maps discipline-card URL hashes to the filter values used here.
+const disciplineSlugMap = {
+  "web-development": "web-development",
+  "ui-ux": "ui-ux-design",
+  "immersive": "immersive-experiments",
+  "product-design": "product-design",
+  "ai-research": "ai-research",
+};
+
 function ProjectArtwork({ project }) {
   return (
     <div
@@ -20,7 +29,9 @@ function ProjectArtwork({ project }) {
       aria-label={`${project.title} abstract artwork`}
       role="img"
     >
-      <span className="artwork-index">{project.number} / SELECTED WORK</span>
+      <span className="artwork-index">
+        {project.number} / SELECTED WORK
+      </span>
 
       {project.type === "product" && (
         <div className="product-art">
@@ -55,7 +66,9 @@ function ProjectArtwork({ project }) {
           <div className="terrain-ring ring-b" />
           <div className="terrain-ring ring-c" />
           <span className="terrain-point" />
-          <span className="terrain-coordinate">29°23' N / 79°27' E</span>
+          <span className="terrain-coordinate">
+            29°23' N / 79°27' E
+          </span>
         </div>
       )}
 
@@ -64,7 +77,9 @@ function ProjectArtwork({ project }) {
           <div className="immersive-shape shape-a" />
           <div className="immersive-shape shape-b" />
           <div className="immersive-shape shape-c" />
-          <span className="immersive-caption">PERCEPTION / SPACE / SELF</span>
+          <span className="immersive-caption">
+            PERCEPTION / SPACE / SELF
+          </span>
         </div>
       )}
     </div>
@@ -81,16 +96,16 @@ function ProjectCard({ project, index }) {
       exit={{ opacity: 0, y: 10 }}
       transition={{ duration: 0.32, delay: index * 0.035 }}
     >
-      <a
+      <Link
         className="work-project-visual"
-        href={project.href || "#contact"}
+        to={project.href || "/work"}
         aria-label={`Explore ${project.title}`}
       >
         <ProjectArtwork project={project} />
         <span className="work-project-open">
           <ArrowUpRight size={18} />
         </span>
-      </a>
+      </Link>
 
       <div className="work-project-meta">
         <span className="eyebrow">{project.category}</span>
@@ -98,7 +113,9 @@ function ProjectCard({ project, index }) {
       </div>
 
       <h2 className="work-project-title">{project.title}</h2>
-      <p className="work-project-description">{project.description}</p>
+      <p className="work-project-description">
+        {project.description}
+      </p>
 
       <div className="work-project-tags">
         {project.tags.map((tag) => (
@@ -110,7 +127,26 @@ function ProjectCard({ project, index }) {
 }
 
 export default function Work() {
+  const location = useLocation();
   const [activeFilter, setActiveFilter] = useState("all");
+
+  // Select the correct filter when arriving through a discipline card
+  // or when the URL hash changes.
+  useEffect(() => {
+    const slug = decodeURIComponent(location.hash.replace(/^#/, ""));
+    const matchingFilter = disciplineSlugMap[slug];
+
+    setActiveFilter(matchingFilter ?? "all");
+
+    if (location.hash) {
+      requestAnimationFrame(() => {
+        document.getElementById("project-index")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      });
+    }
+  }, [location.hash]);
 
   const filteredProjects = useMemo(() => {
     if (activeFilter === "all") return projects;
@@ -126,7 +162,9 @@ export default function Work() {
       <section className="work-page-hero">
         <div className="container">
           <div className="work-page-topline">
-            <span className="section-label">A selection of things made</span>
+            <span className="section-label">
+              A selection of things made
+            </span>
             <span className="eyebrow">INDEX / 2025—2026</span>
           </div>
 
@@ -141,6 +179,7 @@ export default function Work() {
               A collection of applications, research, interfaces and
               experiments shaped by curiosity and the process of making.
             </p>
+
             <a href="#project-index" className="work-page-jump">
               Browse the index <ArrowDownRight size={16} />
             </a>
@@ -157,6 +196,7 @@ export default function Work() {
                 The <span className="title-muted">index.</span>
               </h2>
             </div>
+
             <span className="section-counter">
               {String(filteredProjects.length).padStart(2, "0")} PROJECTS
             </span>
@@ -171,7 +211,21 @@ export default function Work() {
                   activeFilter === filter.value ? "is-active" : ""
                 }`}
                 aria-pressed={activeFilter === filter.value}
-                onClick={() => setActiveFilter(filter.value)}
+                onClick={() => {
+                  setActiveFilter(filter.value);
+
+                  // Keep the URL consistent with the selected filter.
+                  const slug = Object.keys(disciplineSlugMap).find(
+                    (key) => disciplineSlugMap[key] === filter.value
+                  );
+
+                  const nextHash = slug ? `#${slug}` : "";
+                  window.history.replaceState(
+                    window.history.state,
+                    "",
+                    `${location.pathname}${location.search}${nextHash}`
+                  );
+                }}
               >
                 {filter.label}
               </button>
