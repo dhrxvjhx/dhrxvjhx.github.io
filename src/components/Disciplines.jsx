@@ -139,7 +139,7 @@ function CategoryCard({ category }) {
   return (
     <Link
       className="category-card"
-      href={`/work#${category.slug}`}
+      to={`/work#${category.slug}`}
       aria-label={`Explore ${category.title}`}
     >
       <div className="category-card-visual">
