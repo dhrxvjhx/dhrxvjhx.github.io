@@ -9,6 +9,7 @@ import AboutExperience from "../components/AboutExperience.jsx";
 import Footer from "../components/Footer.jsx";
 import About from "./About.jsx";
 import Work from "./Work.jsx";
+import ProjectDetail from "./ProjectDetail.jsx";
 
 function ScrollManager() {
   const { pathname, hash } = useLocation();
@@ -48,6 +49,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/work" element={<Work />} />
         <Route path="/about" element={<About />} />
+        <Route path="/work/:id" element={<ProjectDetail />} />
       </Routes>
       <Footer />
     </BrowserRouter>

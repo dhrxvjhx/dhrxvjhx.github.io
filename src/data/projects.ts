@@ -2,6 +2,7 @@
 export const projects = [
   {
     number: "01",
+    route: "/1",
     title: "ReValue",
     category: "SOFTWARE ENGINEERING",
     discipline: "web-development",
@@ -12,10 +13,20 @@ export const projects = [
     tags: ["React", "Product Design", "Sustainability"],
     tone: "sage",
     type: "product",
-    href: "#contact",
+    href: "/work/1",
+
+    gallery: [
+  {
+    type: "image",
+    src: "/projects/revalue/1.png",
+    alt: "ReValue project interface",
+    caption: "ReValue — campus waste management",
+  },
+],
   },
   {
     number: "02",
+    route: "/2",
     title: "CloudGuard AI",
     category: "AI / CLOUD ENGINEERING",
     discipline: "ai-research",
@@ -26,10 +37,11 @@ export const projects = [
     tags: ["AI", "FastAPI", "Cloud Native"],
     tone: "blue",
     type: "systems",
-    href: "#contact",
+    href: "/work/2",
   },
   {
     number: "03",
+    route: "/3",
     title: "Wildfire Intelligence",
     category: "GEO-SPATIAL RESEARCH",
     discipline: "ai-research",
@@ -40,10 +52,11 @@ export const projects = [
     tags: ["GIS", "Python", "Remote Sensing"],
     tone: "earth",
     type: "research",
-    href: "#contact",
+    href: "/work/3",
   },
   {
     number: "04",
+    route: "/4",
     title: "Fear Therapy",
     category: "IMMERSIVE EXPERIENCE",
     discipline: "immersive-experiments",
@@ -58,6 +71,6 @@ export const projects = [
     ],
     tone: "violet",
     type: "experiments",
-    href: "#contact",
+    href: "/work/4",
   },
 ];
